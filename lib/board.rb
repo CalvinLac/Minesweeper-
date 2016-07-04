@@ -1,19 +1,20 @@
-require 'player'
+require './player'
 require 'pry'
-require 'cell'
+require './cell'
 class Board
 
-	def initialize(rows,columns,mines)
+	def initialize(rows,columns,mines,player)
 		cell=0
-		@board = Array.new(rows){Array.new(columns)}
-		@board.each_with_index do |rowstuff,row|
-			@board[row].each_with_index do |colstuff,column|
-				@board[row][column]=Cell.new(row,column,'blank')
+		@player = player
+		@grid = Array.new(rows){Array.new(columns)}
+		@grid.each_with_index do |rowstuff,row|
+			@grid[row].each_with_index do |colstuff,column|
+				@grid[row][column]=Cell.new(row,column,'blank')
 			end
 		end
 
 		mines.times do
-           randomizer = @board.sample.sample
+           randomizer = @grid.sample.sample
            if randomizer.cellmarker=='bomb'
                 redo
            else randomizer.cellmarker='bomb'
@@ -24,20 +25,20 @@ class Board
 	def render
 		puts "------- Minesweeper -------"
       	puts  "---------------------------"
-			@board[1].each_with_index do |cellstuff,cell|
+			@grid[1].each_with_index do |cellstuff,cell|
 				print '|'
 				print cell
 				print '|'
 			end
 			puts
 
-		@board.each_with_index do |rowstuff,row|
-			@board[row].each_with_index do |cellstuff,cell|
+		@grid.each_with_index do |rowstuff,row|
+			@grid[row].each_with_index do |cellstuff,cell|
 				print '|'
-				if @board[row][cell].cellmarker=='bomb'
-					# && @board[row][cell].hidden==false)
+				if @grid[row][cell].cellmarker=='bomb'
+					# && @grid[row][cell].hidden==false)
 					print '*'
-				# elsif @board[row][cell].cellmarker!='bomb' && @board[row]
+				# elsif @grid[row][cell].cellmarker!='bomb' && @grid[row]
 				# 	print '1'
 				else
 					print '-'
@@ -48,9 +49,46 @@ class Board
 		end
 		puts "---------------------------"
 	end
-end
 
-b=Board.new(9,9,10)
-b.render
+	def count_neighbor_bombs(count_coord)
+        row=count_coord[0]
+        column=count_coord[1]
+        neighbors=[]
+        neighbors <<@grid[row-1][column-1]
+        neighbors<< @grid[row-1][column]
+        neighbors << @grid[row-1][column+1]
+        neighbors << @grid[row][column-1]
+        neighbors << @grid[row][column+1]
+        neighbors << @grid[row+1][column-1]
+        neighbors << @grid[row+1][column]
+        neighbors << @grid[row+1][column+1]
+        counter=0
+        neighbors.each do |x|
+            if x.cellmarker=='bomb'
+                counter+=1
+            else
+                next
+            end
+            counter
+        end
+		
+		
+	end
+
+	def is_bomb?(coord)
+		if @grid[coord[0]][coord[1]].cellmarker=='bomb'
+			return true
+		end
+	end
+
+
+
+
+
+
+
+
+
+end
 
 # elsif @board[row][cell].cellmarker!='bomb'

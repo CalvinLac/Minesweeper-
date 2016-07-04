@@ -12,11 +12,13 @@ describe Player do
 
 	describe '#coordinates' do 
 		it 'properly recieves coords' do 
+			p.coordinates
 			allow(p.coordinates).to receive(:get_coord).and_return([1, 1])
 			expect(p.coordinates.coord).to eq([1, 1])
-			p.coordinates
 		end
 	end
+
+	describe ''
 
 
 
