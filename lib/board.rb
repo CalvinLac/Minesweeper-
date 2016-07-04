@@ -5,7 +5,7 @@ class Board
 
 	def initialize(rows,columns,mines,player)
 		cell=0
-		@player = player
+		@player=player
 		@grid = Array.new(rows){Array.new(columns)}
 		@grid.each_with_index do |rowstuff,row|
 			@grid[row].each_with_index do |colstuff,column|
@@ -35,15 +35,18 @@ class Board
 		@grid.each_with_index do |rowstuff,row|
 			@grid[row].each_with_index do |cellstuff,cell|
 				print '|'
-				if @grid[row][cell].cellmarker=='bomb' && !@grid[row][cell].hidden
+				if @grid[row][cell].cellmarker=='bomb'&& @grid[row][cell].hidden
 					print '*'
-				elsif @grid[row][cell].cellmarker=='bomb' && @grid[row][cell].hidden
+				elsif @grid[row][cell].cellmarker=='bomb'&& @grid[row][cell].hidden
 					print '-'
-				elsif @grid[row][cell].cellmarker=='blank' && @grid[row][cell].hidden
+				elsif  @grid[row][cell].cellmarker=='blank'&& @grid[row][cell].hidden
 					print '-'
-				elsif @grid[row][cell].cellmarker=='numbombs' && !@grid[row][cell].hidden
-					display_neighbour_bombs
-				elsif @grid[row][cell].cellmarker=='numbombs' && !@grid[row][cell].hidden
+				elsif @grid[row][cell].cellmarker=='numbombs'&& !@grid[row][cell].hidden
+					 display_neighbor_bombs([row,cell])
+				elsif @grid[row][cell].cellmarker=='blank'&& !@grid[row][cell].hidden
+					print ' '
+				else
+					print 'e'
 				end
 				print '|'
 			end
@@ -52,37 +55,39 @@ class Board
 		puts "---------------------------"
 	end
 
-	def display_neighbour_bombs(coord)
-		@grid[coord[0]][coord[1]].hidden==false
+	def set_value(coord)
+		@grid[coord[0]][coord[1]].hidden=false
+		if count_neighbor_bombs(coord)!=0
 		@grid[coord[0]][coord[1]].cellmarker='numbombs'
-		num_neighbour_bombs = count_neighbor_bombs(coord)
-		print num_neighbour_bombs
+		end
 	end
 
+	def display_neighbor_bombs(coord)
+		num_neighbor_bombs=count_neighbor_bombs(coord)
+		print num_neighbor_bombs
+	end
 
 	def count_neighbor_bombs(count_coord)
-        row=count_coord[0]
-        column=count_coord[1]
-        neighbors=[]
-        neighbors <<@grid[row-1][column-1]
-        neighbors<< @grid[row-1][column]
-        neighbors << @grid[row-1][column+1]
-        neighbors << @grid[row][column-1]
-        neighbors << @grid[row][column+1]
-        neighbors << @grid[row+1][column-1]
-        neighbors << @grid[row+1][column]
-        neighbors << @grid[row+1][column+1]
-        counter=0
-        neighbors.each do |x|
-            if x.cellmarker=='bomb'
-                counter+=1
-            else
-                next
-            end
-            counter
-        end
-		
-		
+		row=count_coord[0]
+		column=count_coord[1]
+		neighbors=[]
+		neighbors <<@grid[row-1][column-1]
+		neighbors <<@grid[row-1][column]
+		neighbors <<@grid[row-1][column+1]
+		neighbors <<@grid[row][column-1]
+		neighbors <<@grid[row][column+1]
+		neighbors <<@grid[row+1][column-1]
+		neighbors <<@grid[row+1][column]
+		neighbors <<@grid[row+1][column+1]
+		counter=0
+		neighbors.each do |x|
+			if x.cellmarker=='bomb'
+				counter+=1
+			else
+				next
+			end
+		end
+		counter
 	end
 
 	def is_bomb?(coord)
@@ -90,15 +95,42 @@ class Board
 			return true
 		end
 	end
-
-
-
-
-
-
-
-
-
 end
 
-# elsif @board[row][cell].cellmarker!='bomb'
+	# def reveal_adjacent_blanks(coordinates)
+ #        # row=count_coord[0]
+ #        # column=count_coord[1]
+ #        # top_left = []
+ #        # top= []
+ #        # top_right = []
+ #        # left = []
+ #        # right = []
+ #        # bottom_left =[]
+ #        # bottom = []
+ #        # bottom_right = []
+
+	# 	if count_neighbor_bombs<0
+	# 	row=count_coord[0]
+ #        column=count_coord[1]
+ #        neighbors=[]
+ #        neighbors <<@grid[row-1][column-1]
+ #        neighbors <<@grid[row-1][column]
+ #        neighbors << @grid[row-1][column+1]
+ #        neighbors << @grid[row][column-1]
+ #        neighbors << @grid[row][column+1]
+ #        neighbors << @grid[row+1][column-1]
+ #        neighbors << @grid[row+1][column]
+ #        neighbors << @grid[row+1][column+1]
+
+			
+
+
+
+
+
+
+
+
+
+
+

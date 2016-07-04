@@ -40,7 +40,7 @@ class Game
 		@board.render 
 		@player.coordinates
 		break if game_over?
-		@board.count_neighbor_bombs(@player.coord)
+		@board.set_value(@player.coord)
 	    end
 	    puts "game over"
 	end
