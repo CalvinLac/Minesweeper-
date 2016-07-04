@@ -1,10 +1,9 @@
-class Cell 
-
-	def initalize(row, column, type)
-		@row = row 
-		@column = column
-		@cellmarker = cellmarker
+class Cell
+	def initialize(row,column,marker,hidden=true)
+		@row=row
+		@column=column
+		@cellmarker=cellmarker
+		@hidden=hidden
 	end
-	attr_accessor :cellmarker
-
+	attr_accessor :cellmarker, :hidden
 end

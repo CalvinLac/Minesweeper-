@@ -5,8 +5,10 @@ require 'colorize'
 class Game
 
 	def initialize
-		@board
-		@player=Player.new
+		@game
+		puts "What is your name"
+		name = gets.chomp
+		@player=Player.new(name)
 	end
 	attr_reader :difficulty , :player , :board
 
@@ -14,12 +16,10 @@ class Game
 		puts "Welcome to Minesweeper, have fun and dont step on any mines!".blue
 	end
 
-	
-
 	def select_difficulty
 		puts "Please select your difficulty, 1:easy 2:medium 3:hard"
 		difficulty=gets.chomp
-		@board=game_mode
+		@game=game_mode
 	end
 
 	def game_mode
@@ -34,4 +34,4 @@ class Game
 end
 
 g=Game.new
-g.intro
+# g.select_difficulty
