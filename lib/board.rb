@@ -57,6 +57,9 @@ class Board
 
 	def set_value(coord)
 		@grid[coord[0]][coord[1]].hidden=false
+		if count_neighbor_bombs(coord) ==0
+			reveal_adjacent_blanks(coord)
+		end
 		if count_neighbor_bombs(coord)!=0
 		@grid[coord[0]][coord[1]].cellmarker='numbombs'
 		end
@@ -71,14 +74,14 @@ class Board
 		row=count_coord[0]
 		column=count_coord[1]
 		neighbors=[]
-		neighbors <<@grid[row-1][column-1]
-		neighbors <<@grid[row-1][column]
-		neighbors <<@grid[row-1][column+1]
-		neighbors <<@grid[row][column-1]
-		neighbors <<@grid[row][column+1]
-		neighbors <<@grid[row+1][column-1]
-		neighbors <<@grid[row+1][column]
-		neighbors <<@grid[row+1][column+1]
+		neighbors <<@grid[row-1][column-1] if !@grid[row-1][column-1].nil?
+		neighbors <<@grid[row-1][column] if !@grid[row-1][column].nil?
+		neighbors <<@grid[row-1][column+1] if !@grid[row-1][column+1].nil?
+		neighbors <<@grid[row][column-1] if !@grid[row][column-1].nil?
+		neighbors <<@grid[row][column+1] if !@grid[row][column+1].nil? 
+		neighbors <<@grid[row+1][column-1] unless @grid[row+1].nil? || @grid[row+1][column-1].nil?
+		neighbors <<@grid[row+1][column] unless @grid[row+1].nil? || @grid[row+1][column].nil?
+		neighbors <<@grid[row+1][column+1] unless @grid[row+1].nil? || @grid[row+1][column+1].nil?
 		counter=0
 		neighbors.each do |x|
 			if x.cellmarker=='bomb'
@@ -97,8 +100,13 @@ class Board
 	end
 end
 
-	# def reveal_adjacent_blanks(coordinates)
- #        # row=count_coord[0]
+	def reveal_adjacent_blanks(coordinates)
+		row=coordinates[0]
+        column=coordinates[1]
+
+
+        # you're dumb
+         # row=count_coord[0]
  #        # column=count_coord[1]
  #        # top_left = []
  #        # top= []
@@ -108,8 +116,25 @@ end
  #        # bottom_left =[]
  #        # bottom = []
  #        # bottom_right = []
+ #not too sure what the arg for while loop should be
 
-	# 	if count_neighbor_bombs<0
+		# while @grid[row][column].cellmarker == 'blank'
+
+			if count_neighbor_bombs(coordinates) <= 0
+				!@grid[row-1][column-1].hidden
+				!@grid[row-1][column].hidden
+				!@grid[row-1][column+1].hidden
+				!@grid[row][column-1].hidden
+				!@grid[row][column-1].hidden
+				!@grid[row+1][column-1].hidden
+				!@grid[row+1][column].hidden
+				!@grid[row+1][column+1].hidden
+				break
+			end
+		end
+	end
+
+	# 	if count_neighbor_bombs=0
 	# 	row=count_coord[0]
  #        column=count_coord[1]
  #        neighbors=[]
